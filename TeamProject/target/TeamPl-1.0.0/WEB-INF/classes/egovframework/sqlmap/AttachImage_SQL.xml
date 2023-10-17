@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Image">
+	<typeAlias alias="image"
+		type="egovframework.product.service.AttachImageVO" />
+		<typeAlias alias="ImageDefault" type="egovframework.product.service.AttachImageDefaultVO"/>
+	<resultMap class="image" id="ImageResult">
+		<result property="pno" column="pno" />
+		<result property="uploadPath" column="uploadPath" />
+		<result property="fileName" column="fileName" />
+		<result property="uuid" column="uuid" />
+	</resultMap>
+	<select id="AttachImageDAO.getAttachList" resultMap="ImageResult">
+		select * from product_image where pno=#pno#
+	</select>
+	<select id="AttachImageDAO.getImageList" resultMap="ImageResult">
+		select * from product_image 
+		order by pno desc
+		Limit #recordCountPerPage# OFFSET #startIndex#
+	</select>
+	<select id="AttachImageDAO.selectImageTotal" resultClass="java.lang.Integer">
+		select count(*) total from product_image
+	</select>
+	<select id="AttachImageDAO.MainProduct" resultMap="ImageResult">
+		select * from product_image order by pno desc limit 2
+	</select>
+</sqlMap>

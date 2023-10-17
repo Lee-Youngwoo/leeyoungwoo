@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="creply">
+   <typeAlias alias="creply" type="egovframework.reply.service.ReplyVO"/>
+   <resultMap class="creply" id="creplyResult">
+      <result property="rcontent" column="rcontent"/>
+      <result property="ruploaddate" column="ruploaddate"/>
+      <result property="rupdatedate" column="rupdatedate"/>
+      <result property="cno" column="cno"/>
+      <result property="id" column="id"/>
+      <result property="up" column="up"/>
+      <result property="down" column="down"/>
+   </resultMap> 
+   
+   <insert id="ReplyDAO.insertReply">
+      INSERT INTO CREPLY(rcontent,id,cno) VALUES(
+         #rcontent#,
+         #id#,
+         #cno#
+      )
+   </insert>
+   <select id="ReplyDAO.selectReply" resultMap="creplyResult">
+      SELECT * FROM CREPLY WHERE cno=#cno#
+   </select>
+   <select id="ReplyDAO.selectReplyList" resultMap="creplyResult">
+      SELECT * FROM CREPLY 
+   </select>
+   <update id="ReplyDAO.updateReply">
+      UPDATE CREPLY SET
+     	 rcontent=#rcontent#,
+      	 rupdatedate=#rupdatedate#
+      WHERE cno=#cno#
+   </update>
+   
+   <delete id="ReplyDAO.deleteReply">
+      DELETE FROM CREPLY
+      WHERE cno=#cno#
+   </delete>
+   
+   <update id="ReplyDAO.up">
+	  UPDATE CREPLY SET
+	  	up = up + 1
+	  WHERE cno=#cno#
+   </update>
+   
+   <update id="ReplyDAO.down">
+   	  UPDATE CREPLY SET
+   	  	down = down + 1
+   	  WHERE cno=#cno#
+   </update>
+</sqlMap>

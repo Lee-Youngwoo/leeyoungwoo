@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="menu2">
+	<typeAlias alias="menu2"
+		type="egovframework.menu.service.AttachImageVO2" />
+		<typeAlias alias="MenuDefault" type="egovframework.menu.service.AttachImageDefaultVO"/>
+	<resultMap class="menu2" id="MenuResult">
+		<result property="mno" column="mno" />
+		<result property="uploadPath" column="uploadPath" />
+		<result property="fileName" column="fileName" />
+		<result property="uuid" column="uuid" />
+	</resultMap>
+	<select id="AttachImageDAO.getAttachList2" resultMap="MenuResult">
+		select * from menu_image where mno=#mno#
+	</select>
+	<select id="AttachImageDAO.getImageList2" resultMap="MenuResult">
+		select * from menu_image 
+		order by mno desc
+		Limit #recordCountPerPage# OFFSET #startIndex#
+	</select>
+	<select id="AttachImageDAO.selectImageTotal2" resultClass="java.lang.Integer">
+		select count(*) total from menu_image
+	</select>
+	
+	<select id="AttachImageDAO.MainMenu" resultMap="MenuResult">
+		select * from menu_image order by mno desc limit 1
+	</select>
+</sqlMap>

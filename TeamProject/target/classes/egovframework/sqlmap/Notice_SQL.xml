@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="notice">
+   <typeAlias alias="notice" type="egovframework.notice.service.NoticeVO"/>
+   <typeAlias alias="noticeDefault" type="egovframework.notice.service.NoticeDefaultVO"/>
+   <resultMap class="notice" id="noticeResult">
+ 		<result property="nno"  column="nno"/>
+ 		<result property="ntitle" column="ntitle"/>
+ 		<result property="ncontent" column="ncontent"/>
+ 		<result property="nuploaddate" column="nuploaddate"/>
+ 		<result property="view" column="view"/>
+ 		<result property="filename" column="filename"/>
+   </resultMap>
+   
+   <insert id="NoticeDAO.insertNotice">
+   		INSERT INTO NOTICE (ntitle, ncontent, filename) VALUES(
+   			#ntitle#,
+   			#ncontent#,
+   			#filename#
+   		)
+   </insert>
+   
+   <update id="NoticeDAO.updateNotice">
+   		UPDATE NOTICE
+   		SET ntitle=#ntitle#,
+   			ncontent=#ncontent#,
+   			filename=#filename#
+   		WHERE nno=#nno#
+   </update>
+   
+   <delete id="NoticeDAO.deleteNotice">
+   		DELETE FROM NOTICE
+   		WHERE nno=#nno#
+   </delete>
+   
+   <select id="NoticeDAO.selectNotice" resultMap="noticeResult">
+   		SELECT * FROM NOTICE
+   		WHERE nno=#nno#
+   </select>
+   
+   <select id="NoticeDAO.selectNoticeList" resultMap="noticeResult">
+   		SELECT * FROM NOTICE
+   		WHERE 1=1
+   		 <isEqual property="searchCondition" compareValue="ntitle">
+            AND ntitle LIKE CONCAT ('%',#searchKeyword#,'%')
+         </isEqual>
+         <isEqual property="searchCondition" compareValue="ncontent">
+            AND ncontent LIKE CONCAT ('%',#searchKeyword#,'%')
+         </isEqual>
+         ORDER BY nno DESC
+         LIMIT #recordCountPerPage# OFFSET #startIndex#
+   </select>
+   
+   <update id="NoticeDAO.viewCount">
+   		UPDATE NOTICE
+   		SET view = view + 1
+   		WHERE nno=#nno#
+   </update>
+   
+   <select id="NoticeDAO.selectNoticeTotal" resultClass="java.lang.Integer">
+   		SELECT COUNT(*) total FROM NOTICE
+   		WHERE 1=1
+   		 <isEqual property="searchCondition" compareValue="ntitle">
+            AND ntitle LIKE CONCAT ('%',#searchKeyword#,'%')
+         </isEqual>
+      	 <isEqual property="searchCondition" compareValue="ncontent">
+            AND ncontent LIKE CONCAT ('%',#searchKeyword#,'%')
+     	 </isEqual>
+   </select>
+   
+   <select id="NoticeDAO.MainNoticeList" resultMap="noticeResult">
+   		SELECT * FROM NOTICE order by nno desc LIMIT 5 ;
+   </select>
+</sqlMap>

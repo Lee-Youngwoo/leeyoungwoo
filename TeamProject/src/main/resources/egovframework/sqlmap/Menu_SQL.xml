@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="menu">
+	<typeAlias alias="menu" type="egovframework.menu.service.MenuVO" />
+	<resultMap class="menu" id="menuResult">
+		<result property="mno" column="mno"/>
+		<result property="mUploadDate" column="mUploadDate"/>
+		<result property="mUpdateDate" column="mUpdateDate"/>
+		<result property="myear" column="myear"/>
+		<result property="month" column="month"/>
+		<result property="mlike" column="mlike"/>
+	</resultMap>
+	<insert id="MenuDAO.insertMenu">
+		<selectKey keyProperty="mno" resultClass="int" type="post">
+			select LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO MENU(myear, month) VALUES(
+		#myear#,
+		#month#
+		)	
+	</insert>
+	<update id="MenuDAO.updateMenu">
+		UPDATE Menu
+		SET 
+		mUpdateDate=now(),
+		myear=#myear#,
+		month=#month#
+		WHERE mno=#mno#
+	</update>
+	<delete id="MenuDAO.deleteMenu">
+		DELETE FROM MENU
+		WHERE mno=#mno#
+	</delete>
+	<select id="MenuDAO.selectMenu" resultMap="menuResult">
+		SELECT *
+		FROM Menu
+		WHERE mno=#mno#
+	</select>
+	<select id="MenuDAO.selectMenuList" resultMap="menuResult">
+		SELECT *from menu
+		order by mno desc
+		Limit #recordCountPerPage# OFFSET #startIndex#
+	</select>
+	<select id="MenuDAO.selectMenuTotal" resultClass="java.lang.Integer">
+		select count(*) total from menu 
+	</select>
+	<!-- 이미지 등록 -->
+	<insert id="MenuDAO.imageEnroll">
+		insert into menu_image(mno, fileName, uploadPath, uuid) values (#mno#, #fileName#, #uploadPath#, #uuid#)
+	</insert>
+	
+	<!-- 지정한 공지 이미지 삭제 -->
+	<delete id="MenuDAO.deleteImageAll">
+		delete from menu_image where mno=#mno#
+	</delete>
+	
+	<update id="MenuDAO.up">
+		UPDATE menu SET 
+			mlike = mlike + 1
+		WHERE mno=#mno#
+	</update>
+	<select id="MenuDAO.MainMenu" resultMap="menuResult">
+		select * from menu order by mno desc limit 1
+	</select>
+</sqlMap>

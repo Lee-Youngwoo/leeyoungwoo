@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="product">
+	<typeAlias alias="product" type="egovframework.product.service.ProductVO"/>
+	<resultMap class="product" id="productResult">
+		<result property="pno" column="pno"/>
+		<result property="pname" column="pname"/>
+		<result property="price" column="price"/>
+		<result property="pcontent" column="pcontent"/>
+		<result property="puploaddate" column="puploaddate"/>
+		<result property="pcode" column="pcode"/>
+		<result property="plike" column="plike"/>
+		
+	</resultMap> 
+	
+	<insert id="ProductDAO.insertProduct">
+		<selectKey keyProperty="pno" resultClass="int" type="post">
+			select LAST_INSERT_ID()
+		</selectKey>
+	
+		insert into product (pname,price,pcontent,pcode) values(#pname#,#price#,#pcontent#,#pcode#)
+	</insert>
+	<update id="ProductDAO.updateProduct">
+		update product set pname=#pname#, price=#price# ,pcontent=#pcontent# ,pcode=#pcode# where pno=#pno#
+	</update>
+	<delete id="ProductDAO.deleteProduct">
+		delete from product where pno=#pno#
+	</delete>
+	<select id="ProductDAO.selectProduct" resultMap="productResult">
+	select * from product where pno=#pno#
+	</select>
+	<select id="ProductDAO.selectProductList" resultMap="productResult">
+		select * from product
+		order by pno desc
+		Limit #recordCountPerPage# OFFSET #startIndex#
+	</select>
+	<select id="ProductDAO.selectProductTotal" resultClass="java.lang.Integer">
+	select count(*) total from product 
+	</select>
+	<!-- 이미지 등록 -->
+	<insert id="ProductDAO.imageEnroll">
+		insert into product_image(pno, fileName, uploadPath, uuid) values (#pno#, #fileName#, #uploadPath#, #uuid#)
+	</insert>
+	
+	<!-- 지정한 공지 이미지 삭제 -->
+	<delete id="ProductDAO.deleteImageAll">
+		delete from product_image where pno=#pno#
+	</delete>
+	
+	<update id="ProductDAO.up">
+		UPDATE product SET
+			plike = plike + 1
+		WHERE pno=#pno#
+	</update>
+	
+	<select id="ProductDAO.MainProductList" resultMap="productResult">
+   		select * from product order by pno desc limit 2;
+   </select>
+	
+</sqlMap>

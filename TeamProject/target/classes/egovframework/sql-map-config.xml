@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd" >
+<sqlMapConfig>
+	<sqlMap resource="egovframework/sqlmap/Member_SQL.xml"></sqlMap>
+	<sqlMap resource="egovframework/sqlmap/product_SQL.xml"></sqlMap>
+	<sqlMap resource="egovframework/sqlmap/Compl_SQL.xml"></sqlMap>
+	<sqlMap resource="egovframework/sqlmap/Reply_SQL.xml"></sqlMap>
+	<sqlMap resource="egovframework/sqlmap/AttachImage_SQL.xml"></sqlMap>
+	<sqlMap resource="egovframework/sqlmap/Menu_SQL.xml"></sqlMap>
+	<sqlMap resource="egovframework/sqlmap/AttachImage_SQL2.xml"></sqlMap>
+	<sqlMap resource="egovframework/sqlmap/Notice_SQL.xml"></sqlMap>
+</sqlMapConfig>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Compl">
+	<typeAlias alias="compl" type="egovframework.compl.service.ComplVO"/>
+	<typeAlias alias="complDefault" type="egovframework.compl.service.ComplDefaultVO"/>
+	<resultMap class="compl" id="complResult">
+		<result property="cno" column="cno"/>
+		<result property="ctitle" column="ctitle"/>
+		<result property="id" column="id" />
+		<result property="ccontent" column="ccontent"/>
+		<result property="view" column="view"/>
+		<result property="cuploaddate" column="cuploaddate"/>
+		<result property="secret" column="secret"/>
+		<result property="cupdatedate" column="cupdatedate"/>
+	</resultMap>
+	
+	<insert id="ComplDAO.insertCompl">
+		INSERT INTO COMPL(ctitle,id,ccontent,secret) VALUES (
+			#ctitle#,
+			#id#,
+			#ccontent#,
+			#secret#
+		)
+	</insert>
+	
+	<update id="ComplDAO.updateCompl">
+		UPDATE COMPL
+		SET ctitle=#ctitle#,
+			ccontent=#ccontent#,
+			secret=#secret#,
+			cupdatedate=#cupdatedate#
+		where cno=#cno#
+	</update>
+	
+	<delete id="ComplDAO.deleteCompl">
+		DELETE FROM COMPL
+		WHERE cno=#cno#
+	</delete>
+	
+	<select id="ComplDAO.selectCompl" resultMap="complResult">
+		SELECT *
+		FROM Compl
+		WHERE cno=#cno#
+	</select>
+	
+	<select id="ComplDAO.selectComplList" resultMap="complResult">
+			select * from compl 
+			where 1=1 
+			<isEqual property="searchCondition" compareValue="ctitle">
+				AND ctitle LIKE CONCAT ('%',#searchKeyword#,'%') AND secret=false
+			</isEqual>
+			<isEqual property="searchCondition" compareValue="ccontent">
+				AND ccontent LIKE CONCAT ('%',#searchKeyword#,'%') AND secret=false
+			</isEqual>
+			
+			order by Cno desc
+			LIMIT #recordCountPerPage# OFFSET #startIndex#
+	</select>
+	
+	<update id="ComplDAO.viewCount">
+		UPDATE COMPL
+		SET view=view+1
+		WHERE Cno=#cNo#
+	</update>
+	
+	<select id="ComplDAO.selectComplTotal" resultClass="java.lang.Integer">
+		SELECT COUNT(*) total FROM COMPL
+		where 1=1
+		<isEqual property="searchCondition" compareValue="ctitle">
+				AND ctitle LIKE CONCAT ('%',#searchKeyword#,'%') AND secret=false
+			</isEqual>
+		<isEqual property="searchCondition" compareValue="ccontent">
+				AND ccontent LIKE CONCAT ('%',#searchKeyword#,'%') AND secret=false
+		</isEqual>
+	</select>
+	
+	<select id="ComplDAO.selectMyComplList" resultMap="complResult">
+		select *from compl
+		where id=#id# 
+		order by Cno desc 
+		LIMIT #recordCountPerPage# OFFSET #startIndex#
+	</select>
+	
+	<select id="ComplDAO.selectMyComplTotal" resultClass="java.lang.Integer">
+		SELECT COUNT(*) total FROM COMPL
+		where id=#id#
+	
+	</select>
+	
+</sqlMap>

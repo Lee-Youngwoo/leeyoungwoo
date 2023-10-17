@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="member">
+	<typeAlias alias="member"
+		type="egovframework.member.service.MemberVO" />
+	<resultMap class="member" id="memberResult">
+		<result property="uid" column="id" />
+		<result property="pwd" column="pwd" />
+		<result property="name" column="name" />
+		<result property="level" column="level" />
+		<result property="email" column="email" />
+		<result property="phone" column="phone" />
+		<result property="reg_date" column="reg_date" />
+		<result property="update_date" column="update_date"/>
+		<result property="withdraw" column="withdraw"/>
+	</resultMap>
+
+	<insert id="MemberDAO.insertMember">
+		insert into user(id,pwd,name,email,phone) values
+		(#uid#,#pwd#,#name#,#email#,#phone#)
+	</insert>
+	<update id="MemberDAO.updateMember">
+		update user set pwd=#pwd#, name=#name#,
+		email=#email#, phone=#phone# ,update_date=now() where id=#uid#
+	</update>
+	<update id="MemberDAO.withDrawMember">
+		update user set withdraw=true where id=#uid#
+	</update>
+	<delete id="MemberDAO.deleteMember">
+		delete from user where withdraw=1
+	</delete>
+	<select id="MemberDAO.selectMember" resultMap="memberResult">
+		select * from user where id=#uid#
+	</select>
+	<select id="MemberDAO.selectMemberList" resultMap="memberResult">
+		select * from user
+	</select>
+	<select id="MemberDAO.selectMemberIdCheck"
+		resultClass="java.lang.Integer">
+		select count(*) from user where id=#uid#
+	</select>
+	<select id="MemberDAO.selectMemberEmailCheck"
+		resultClass="java.lang.Integer">
+		select count(*) from user where email=#email#
+	</select>
+	
+	<select id="MemberDAO.selectMemberCount"
+		resultClass="java.lang.Integer">
+		select count(*) from user where id=#uid# and pwd=#pwd# and withdraw=false
+	</select>
+	<!-- 로그인시 아이디와 비밀번호 확인 -->
+	<select id="MemberDAO.loginUser" resultMap="memberResult">
+		select * from user
+		where id=#uid#
+	</select>
+
+	<select id="MemberDAO.findId" resultMap="memberResult">
+		select * from user where
+		name=#name# and phone=#phone#
+	</select>
+
+	<select id="MemberDAO.findPassword" resultMap="memberResult">
+		select * from user
+		where id=#uid# and name=#name# and phone=#phone#
+	</select>
+
+	<update id="MemberDAO.updatePassword">
+		update user set pwd=#pwd# where id=#uid#
+	</update>
+	
+	<update id="MemberDAO.updateLevel">
+		update user set level='admin' where id=#uid#
+	</update>
+	
+
+</sqlMap>
